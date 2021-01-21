@@ -73,7 +73,7 @@ spring:
         job:
           enabled: false
     secondary:
-      url: jdbc:mysql://mysql:3306/pix?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
+      url: jdbc:mysql://mysql:3306/pix_crawler?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8
       username:
       password:
       driver-class-name: com.mysql.cj.jdbc.Driver

@@ -1,5 +1,7 @@
 package com.lance.pix.biz.web.illust.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lance.pix.biz.web.illust.po.Rank;
 import com.lance.pix.biz.web.illust.secmapper.RankMapper;
 import com.lance.pix.common.po.Illustration;
@@ -17,13 +19,14 @@ import java.util.stream.Collectors;
 /**
  * @Author lancer1126
  * @Date 2020-12-6
- * @Description TODO
+ * @Description 首页排行
  */
 @Service
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
+@Transactional(propagation = Propagation.NOT_SUPPORTED, transactionManager = "SecondaryTransactionManager")
 public class RankService {
     private final RankMapper rankMapper;
+    private final ObjectMapper objectMapper;
 
     @Cacheable(value = "rank")
     public List<Illustration> queryByDateAndMode(String date, String mode, int page, int pageSize) {
@@ -32,6 +35,6 @@ public class RankService {
         if (rank != null) {
             illustrationList = rank.getData().stream().skip((long) pageSize * (page - 1)).limit(pageSize).collect(Collectors.toList());
         }
-        return illustrationList;
+        return objectMapper.convertValue(illustrationList, new TypeReference<List<Illustration>>() {});
     }
 }

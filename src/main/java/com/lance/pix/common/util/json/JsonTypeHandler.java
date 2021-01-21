@@ -37,7 +37,7 @@ import java.util.List;
         List.class, Illustration.class, Actor.class})
 public class JsonTypeHandler<T> extends BaseTypeHandler<T> {
 
-    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
