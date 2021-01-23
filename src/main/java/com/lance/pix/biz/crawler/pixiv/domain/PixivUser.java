@@ -7,6 +7,8 @@ import io.github.bucket4j.Refill;
 import lombok.Data;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
@@ -36,5 +38,18 @@ public class PixivUser {
         grantType = "password";
         bucket = Bucket4j.builder()
                 .addLimit(Bandwidth.classic(800, Refill.intervally(800, Duration.ofMinutes(10)))).build();
+    }
+
+    public String getRequestBody() {
+        Map<String, String> paramsMap = new HashMap<>(
+                Map.of("client_id", CLIENT_ID,
+                        "client_secret",CLIENT_SECRET,
+                        "grant_type", grantType,
+                        "username", username,
+                        "password", password,
+                        "device_token", deviceToken,
+                        "refresh_token", refreshToken,
+                        "get_secure_url", "true"));
+        return
     }
 }

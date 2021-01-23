@@ -11,7 +11,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -23,6 +25,17 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RequestUtil {
     private final OauthManager oauthManager;
+
+    public static String getPostEntity(Map<String, String> param) {
+        StringBuilder stringBuilder = new StringBuilder();
+        Iterator<Map.Entry<String, String>> iterator = param.entrySet().iterator();
+        Map.Entry<String, String> entry;
+        while (iterator.hasNext()) {
+            entry = iterator.next();
+            stringBuilder.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
+        }
+        return stringBuilder.toString();
+    }
 
     public CompletableFuture<String> getJson(String url) {
         HttpRequest.Builder uri = HttpRequest.newBuilder().uri(URI.create(url));
