@@ -1,5 +1,8 @@
 package com.lance.pix.biz.crawler.pixiv.domain;
 
+import com.lance.pix.common.util.pixiv.OathResp;
+import com.lance.pix.common.util.pixiv.OathRespBody;
+import com.lance.pix.common.util.pixiv.RequestUtil;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.Bucket4j;
@@ -50,6 +53,44 @@ public class PixivUser {
                         "device_token", deviceToken,
                         "refresh_token", refreshToken,
                         "get_secure_url", "true"));
-        return
+        return RequestUtil.getPostEntity(paramsMap);
+    }
+
+    public String getAccessToken() {
+        readLock.lock();
+        try {
+            return accessToken;
+        } finally {
+            readLock.unlock();
+        }
+    }
+
+    public boolean refresh(OathRespBody oathRespBody) {
+        writeLock.lock();
+        try {
+            OathResp resp = oathRespBody.getResponse();
+            if (resp != null) {
+                accessToken = resp.getAccessToken();
+                deviceToken = resp.getDeviceToken();
+                refreshToken = resp.getRefreshToken();
+                grantType = "refresh_token";
+                isBan = 0;
+                return true;
+            }
+        } finally {
+            writeLock.unlock();
+        }
+        return false;
+    }
+
+    public void ban() {
+        writeLock.lock();
+        try {
+            accessToken = null;
+            grantType = "password";
+            isBan = 1;
+        } finally {
+            writeLock.unlock();
+        }
     }
 }
