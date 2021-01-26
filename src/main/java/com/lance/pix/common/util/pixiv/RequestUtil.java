@@ -1,5 +1,6 @@
 package com.lance.pix.common.util.pixiv;
 
+import com.lance.pix.biz.crawler.pixiv.domain.PixivUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,7 +41,7 @@ public class RequestUtil {
     public CompletableFuture<String> getJson(String url) {
         HttpRequest.Builder uri = HttpRequest.newBuilder().uri(URI.create(url));
         decorateHeader(uri);
-        //todo
+
         return null;
     }
 
