@@ -24,7 +24,7 @@ public class PixivicSyncController {
     /**
      * 抓取Pixiv每日排行
      * @param date  日期
-     * @return      ranks
+     * @return      ranksf
      */
     @GetMapping("/reSyncRank")
     public ResponseEntity<Result<String>> reSyncRank(@RequestParam String date) {
