@@ -7,6 +7,7 @@ import com.lance.pix.biz.web.artist.service.ArtistBizService;
 import com.lance.pix.biz.web.common.exception.BusinessException;
 import com.lance.pix.biz.web.illust.service.IllustrationBizService;
 import com.lance.pix.biz.web.user.dto.ArtistWithRecentlyIllusts;
+import com.lance.pix.biz.web.user.dto.UserListDTO;
 import com.lance.pix.biz.web.user.mapper.BusinessMapper;
 import com.lance.pix.common.constant.AuthConstant;
 import com.lance.pix.common.constant.RedisKeyConstant;
@@ -204,6 +205,11 @@ public class BusinessService {
         //遍历切割出k个升序数组,用大根堆进行合并得到TOP3000
         return mergekSortedArrays(split(illustrationIdList));
 
+    }
+
+    @Cacheable(value = "illust_bookmarked", key = "#illustId+'-'+#page+'-'+#pageSize")
+    public List<UserListDTO> queryUserListBookmarkedIllust(Integer illustId, Integer page, Integer pageSize) {
+        return businessMapper.queryUserListBookmarkedIllust(illustId, (page - 1) * pageSize, pageSize);
     }
 
     /**
